@@ -37,7 +37,7 @@ class Gate:
         gate: Gate
 
         """
-        splitted_string = re.split("\(|\)", gate.strip())
+        splitted_string = re.split(r"\(|\)", gate.strip())
         axis = splitted_string[0]
         angle = int(splitted_string[1])
 

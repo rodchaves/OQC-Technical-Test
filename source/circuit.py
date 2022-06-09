@@ -11,7 +11,7 @@ class Circuit:
 
     Methods
     -------
-    from_string(list_of_gates = str):
+    from_string(string_of_gates = str):
         Input a string with sequential rotations with axis and angles, then
         transforms them in a circuit which is a list of gates.
 
@@ -24,20 +24,20 @@ class Circuit:
             self.gates = gates
 
     @classmethod
-    def from_string(cls, list_of_gates: str):
+    def from_string(cls, string_of_gates: str):
         """
         Method that transforms a list of gates into a Circuit.
 
         Parameters
         ----------
-        list_of_gates: list
+        string_of_gates: str
 
         Returns
         -------
         Circuit: Circuit
 
         """
-        splitted_gates = re.split(',', list_of_gates)
+        splitted_gates = re.split(',', string_of_gates)
 
         gates = []
 
