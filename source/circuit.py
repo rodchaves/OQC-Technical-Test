@@ -102,26 +102,27 @@ class Circuit:
             return self
 
         final_circuit = []
-        temp_gate = list_of_gates.pop(0)
+        current_gate = list_of_gates.pop(0)
                
 
         for next_gate in list_of_gates:
-            if temp_gate.axis != next_gate.axis and next_gate.angle == 180:
+            if current_gate.axis != next_gate.axis and next_gate.angle == 180:
                 final_circuit.append(next_gate)
-                temp_gate = Gate(axis = temp_gate.axis, angle = -temp_gate.angle)
-            elif temp_gate.axis == next_gate.axis:
-                temp_gate = temp_gate + next_gate            
+                current_gate = Gate(axis = current_gate.axis, angle = -current_gate.angle)
+            elif current_gate.axis == next_gate.axis: 
+                current_gate = current_gate + next_gate            
             else:
-                final_circuit.append(temp_gate)
-                temp_gate = next_gate
+                if current_gate.angle != 0:
+                    final_circuit.append(current_gate)
+                current_gate = next_gate
         
-        if temp_gate.angle != 0:
-            final_circuit.append(temp_gate)
+        if current_gate.angle != 0:
+            final_circuit.append(current_gate)
         
         if final_circuit == []:
             raise UnboundLocalError
 
-        return Circuit(gates = final_circuit)
+        return Circuit(gates = final_circuit)._sum_rotations_same_axis()
 
     def optimizationXY(self):
         """
@@ -157,6 +158,7 @@ class Circuit:
         circuit: Circuit
 
         """
+        self = self._sum_rotations_same_axis()
         list_of_gates = self.gates
         final_circuit = []
 
@@ -168,7 +170,7 @@ class Circuit:
             else:
                 final_circuit.append(gate)
         
-        return Circuit(gates = final_circuit)
+        return Circuit(gates = final_circuit)._sum_rotations_same_axis()
 
     def optimizationXZ(self):
         """

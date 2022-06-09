@@ -86,6 +86,10 @@ class TestCircuit:
                 "X(90),Y(90),X(90),Y(180),X(90),Y(90),X(90)", 
                 [Gate(axis = 'X', angle = 180)]
             ),
+            (
+                "X(90),Y(90),X(90),X(90),X(90),Y(180),X(90)", 
+                [Gate(axis = 'X', angle = 90), Gate(axis = 'Y', angle = 270), Gate(axis = 'X', angle = 180)]
+            ),
         ],
     )
 
