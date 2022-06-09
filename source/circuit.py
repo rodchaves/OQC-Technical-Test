@@ -47,7 +47,7 @@ class Circuit:
 
         Parameters
         ----------
-        circuit: Circuit
+        self: Circuit
 
         Returns
         --------
@@ -66,25 +66,56 @@ class Circuit:
                 if temp_gate.angle != 0:
                     final_circuit.append(temp_gate)
                 temp_gate = gate
-
-        final_circuit.append(temp_gate)
         
+        if temp_gate.angle != 0:
+            final_circuit.append(temp_gate)
+        
+        if final_circuit == []:
+            raise UnboundLocalError
+
         return Circuit(gates = final_circuit)
 
     def _check_reflections(self):
+        """
+        Private function to reflect gates when a gate is followed by a reflection
+        (either X(theta) followed by Y(180) or Y(theta) followed by X(180)). This
+        is a required step for the optimization method.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        --------
+        circuit: Circuit
+
+
+        """
         list_of_gates = self.gates
+
+        if len(list_of_gates) < 3:
+            return self
+
         final_circuit = []
         temp_gate = list_of_gates[0]
-        list_of_gates = list_of_gates.pop(0)
+        list_of_gates.pop(0)       
 
         for gate in list_of_gates:
             if temp_gate.axis != gate.axis and gate.angle == 180:
                 final_circuit.append(gate)
-                temp_gate = Gate(axis = gate.axis, angle = -gate.angle)
+                temp_gate = Gate(axis = temp_gate.axis, angle = -temp_gate.angle)
+            elif temp_gate.axis == gate.axis:
+                temp_gate = temp_gate + gate            
             else:
                 final_circuit.append(temp_gate)
                 temp_gate = gate
         
+        if temp_gate.angle != 0:
+            final_circuit.append(temp_gate)
+        
+        if final_circuit == []:
+            raise UnboundLocalError
+
         return Circuit(gates = final_circuit)
 
     def optimizationXY(self):
@@ -95,14 +126,14 @@ class Circuit:
 
         Parameters
         ----------
-        circuit: Circuit
+        self: Circuit
 
         Returns
         -------
         circuit: Circuit
 
         """
-        #self.gates = _check_reflections(self).gates
+        self = self._check_reflections()
         self = self._sum_rotations_same_axis()
         
         return self
