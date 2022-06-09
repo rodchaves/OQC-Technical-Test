@@ -11,14 +11,20 @@ class Circuit:
 
     Methods
     -------
+    from_string(list_of_gates = str):
+        Input a string with sequential rotations with axis and angles, then
+        transforms them in a circuit which is a list of gates.
 
+    optimizationXY(self = Circuit):
+        Input a Circuit that will be optimized by summing rotations with the same
+        axis and applying reflections when applicable.
 
     """
     def __init__(self, gates: list):
             self.gates = gates
 
     @classmethod
-    def from_string(cls, list_of_gates: list):
+    def from_string(cls, list_of_gates: str):
         """
         Method that transforms a list of gates into a Circuit.
 

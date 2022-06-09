@@ -15,6 +15,9 @@ class Gate:
 
     Methods
     -------
+    from_string(gate = str): 
+        Receive a string as input and outputs a Gate with axis and
+        angle associated with the input.
 
     """
     axis: str
