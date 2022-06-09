@@ -144,8 +144,32 @@ class Circuit:
         
         return self
 
+    def _swap_Y_for_Z(self):
+        """
+        Private function to replace all Y(theta) rotation gates for Z(90)X(theta)Z(-90) with the intention of
+        simulating a circuit in a quantum computer that does not have Y gates.
 
+        Parameters
+        ----------
+        self: Circuit
 
+        Returns
+        -------
+        circuit: Circuit
+
+        """
+        list_of_gates = self.gates
+        final_circuit = []
+
+        for gate in list_of_gates:
+            if gate.axis == 'Y':
+                final_circuit.append(Gate(axis = 'Z', angle = 90))
+                final_circuit.append(Gate(axis = 'X', angle = gate.angle))
+                final_circuit.append(Gate(axis = 'Z', angle = -90))
+            else:
+                final_circuit.append(gate)
+        
+        return Circuit(gates = final_circuit)
 
 
     
