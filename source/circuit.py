@@ -194,6 +194,22 @@ class Circuit:
         return self
 
     def hardware_running_time(self, lengthZ, lengthX):
+        """
+        Method to check the expected running time of a circuit in the harware.
+        The method loops through all gates and add the expected time of each one
+        of them.
+
+        Parameters
+        ----------
+        self: Circuit
+        lengthZ: int
+        lengthX: int
+
+        Returns
+        --------
+        time_taken: int
+        
+        """
 
         self = self.optimizationXZ()
         list_of_gates = self.gates
