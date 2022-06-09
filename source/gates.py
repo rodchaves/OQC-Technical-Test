@@ -38,7 +38,25 @@ class Gate:
         axis = splitted_string[0]
         angle = int(splitted_string[1])
 
-        return cls(axis=axis,angle=angle)
+        return cls(axis=axis, angle=angle)
+
+    def __add__(self, gate: Gate):
+        """
+        Add the angle of two gates that have the same axis of rotation.
+
+        Parameters
+        ----------
+        gate: Gate
+        
+        Returns
+        -------
+        gate: Gate
+        
+        """
+        if self.axis == gate.axis:
+            new_angle = (self.angle + gate.angle)%360
+            return Gate(axis = self.axis, angle = new_angle)
+        raise ValueError
     
 
 
