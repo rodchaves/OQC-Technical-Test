@@ -172,5 +172,22 @@ class Circuit:
         return Circuit(gates = final_circuit)
 
     def optimizationXZ(self):
-        
+        """
+        Method responsible for replacing all Y rotations for ZX rotations and applying all the necessary
+        optimizations like reflections and sum of gates.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        -------
+        circuit: Circuit
+
+        """
+
         self = self._swap_Y_for_Z()
+        self = self._check_reflections()
+        self = self._sum_rotations_same_axis()
+
+        return self

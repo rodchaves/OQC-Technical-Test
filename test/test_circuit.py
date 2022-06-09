@@ -4,6 +4,7 @@ import pytest
 
 class TestCircuit:
     def test_can_read_circuit_from_string(self):
+
         circuit = Circuit.from_string("X(90),Y(180)")
 
         assert circuit.gates == [
@@ -12,6 +13,7 @@ class TestCircuit:
         ]
     
     def test_sum_of_gates(self):
+
         circuit1 = Circuit.from_string("X(90),X(90),X(90)")
         circuit2 = Circuit.from_string("X(90),Y(90),X(90)")
         circuit3 = Circuit.from_string("X(90),X(-90),X(90)")
@@ -55,6 +57,7 @@ class TestCircuit:
 
 
     def test_reflections_and_sum_of_gates(self):
+
         circuit1 = Circuit.from_string("X(90),Y(180),X(90)")
         circuit2 = Circuit.from_string("Y(90),X(180),Y(90)")
         circuit3 = Circuit.from_string("Y(90),Y(90),X(180),Y(90),Y(90)")
@@ -92,12 +95,51 @@ class TestCircuit:
 
         def test_swap_between_Y_and_Z(self):
 
-            circuit = Circuit.from_string("Y(90)")
+            circuit1 = Circuit.from_string("Y(90)")
+            circuit2 = Circuit.from_string("X(90),Y(90)")
 
-            circuit = circuit.optimizationXZ()
+            circuit1 = circuit1.optimizationXZ()
+            circuit2 = circuit2.optimizationXZ()
 
             assert circuit.gates == [
                 Gate(axis = 'Z', angle = 90),
                 Gate(axis = 'X', angle = 90),
                 Gate(axis = 'Z', angle = -90)
             ]
+
+            assert circuit2.gates == [
+                Gate(axis = 'X', angle = 90),
+                Gate(axis = 'Z', angle = 90),
+                Gate(axis = 'X', angle = 90),
+                Gate(axis = 'Z', angle = -90)
+            ]
+
+        def test_optimization_of_circuit_with_X_and_Z(self):
+
+            circuit1 = Circuit.from_string("X(90),Y(180)")
+            circuit2 = Circuit.from_string("X(-180),Y(180)")
+            circuit3 = Circuit.from_string("X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)")
+            circuit4 = Circuit.from_string("Y(90),Y(90),X(180),Y(90),Y(90)")
+
+            circuit1 = circuit1.optimizationXZ()
+            circuit2 = circuit2.optimizationXZ()
+            circuit3 = circuit3.optimizationXZ()
+            circuit4 = circuit4.optimizationXZ()
+
+            assert circuit1.gates == [
+                Gate(axis = 'X', angle = 270),
+                Gate(axis = 'Z', angle = 180)
+            ]
+            assert circuit2.gates == [
+                Gate(axis = 'Z', angle = 180)
+            ]
+            assert circuit3.gates == [
+                Gate(axis = 'Z', angle = 90),
+                Gate(axis = 'X', angle = 20),
+                Gate(axis = 'Z', angle = -90)
+            ]
+            assert circuit4.gates == [
+                Gate(axis = 'X', angle = 180)
+            ]
+
+
