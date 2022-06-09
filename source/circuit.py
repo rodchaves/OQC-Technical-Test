@@ -171,5 +171,6 @@ class Circuit:
         
         return Circuit(gates = final_circuit)
 
-
-    
+    def optimizationXZ(self):
+        
+        self = self._swap_Y_for_Z()

@@ -89,3 +89,15 @@ class TestCircuit:
         assert circuit6.gates == [
             Gate(axis = 'X', angle = 270)
         ]
+
+        def test_swap_between_Y_and_Z(self):
+
+            circuit = Circuit.from_string("Y(90)")
+
+            circuit = circuit.optimizationXZ()
+
+            assert circuit.gates == [
+                Gate(axis = 'Z', angle = 90),
+                Gate(axis = 'X', angle = 90),
+                Gate(axis = 'Z', angle = -90)
+            ]
