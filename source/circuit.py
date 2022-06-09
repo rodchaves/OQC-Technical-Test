@@ -62,19 +62,18 @@ class Circuit:
         """
         list_of_gates = self.gates
         final_circuit = []
-        temp_gate = list_of_gates[0]
-        list_of_gates.pop(0)
-
-        for gate in list_of_gates:
-            if temp_gate.axis == gate.axis:
-                temp_gate = temp_gate + gate
-            else:
-                if temp_gate.angle != 0:
-                    final_circuit.append(temp_gate)
-                temp_gate = gate
+        current_gate = list_of_gates.pop(0)
         
-        if temp_gate.angle != 0:
-            final_circuit.append(temp_gate)
+        for next_gate in list_of_gates:
+            if current_gate.axis == next_gate.axis:
+                current_gate = current_gate + next_gate
+            else:
+                if current_gate.angle != 0:
+                    final_circuit.append(current_gate)
+                current_gate = next_gate
+        
+        if current_gate.angle != 0:
+            final_circuit.append(current_gate)
         
         if final_circuit == []:
             raise UnboundLocalError
@@ -103,18 +102,18 @@ class Circuit:
             return self
 
         final_circuit = []
-        temp_gate = list_of_gates[0]
-        list_of_gates.pop(0)       
+        temp_gate = list_of_gates.pop(0)
+               
 
-        for gate in list_of_gates:
-            if temp_gate.axis != gate.axis and gate.angle == 180:
-                final_circuit.append(gate)
+        for next_gate in list_of_gates:
+            if temp_gate.axis != next_gate.axis and next_gate.angle == 180:
+                final_circuit.append(next_gate)
                 temp_gate = Gate(axis = temp_gate.axis, angle = -temp_gate.angle)
-            elif temp_gate.axis == gate.axis:
-                temp_gate = temp_gate + gate            
+            elif temp_gate.axis == next_gate.axis:
+                temp_gate = temp_gate + next_gate            
             else:
                 final_circuit.append(temp_gate)
-                temp_gate = gate
+                temp_gate = next_gate
         
         if temp_gate.angle != 0:
             final_circuit.append(temp_gate)
@@ -191,3 +190,17 @@ class Circuit:
         self = self._sum_rotations_same_axis()
 
         return self
+
+    def hardware_running_time(self, lengthZ, lengthX):
+
+        self = self.optimizationXZ()
+        list_of_gates = self.gates
+        time_taken = 0
+
+        for gate in list_of_gates:
+            if gate.axis == 'Z':
+                time_taken += lengthZ
+            else:
+                time_taken += lengthX
+        
+        return time_taken

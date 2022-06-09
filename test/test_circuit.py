@@ -12,134 +12,132 @@ class TestCircuit:
             Gate(axis = 'Y', angle = 180)
         ]
     
-    def test_sum_of_gates(self):
+    @pytest.mark.parametrize(
+        "gate_string, final_circuit",
+        [
+            (
+                "X(90),X(90),X(90)", 
+                [Gate(axis = 'X', angle = 270)]
+            ),
+            (
+                "X(90),Y(90),X(90)", 
+                [Gate(axis = 'X', angle = 90), Gate(axis = 'Y', angle = 90), Gate(axis = 'X', angle = 90)]
+            ),
+            (
+                "X(90),X(-90),X(90)", 
+                [Gate(axis = 'X', angle = 90)]
+            ),
+            (
+                "X(90),X(90),Y(90)", 
+                [Gate(axis = 'X', angle = 180), Gate(axis = 'Y', angle = 90)]
+            ),
+            (
+                "X(30),X(90)", 
+                [Gate(axis = 'X', angle = 120)]
+            ),
+            (
+                "X(90)", 
+                [Gate(axis = 'X', angle = 90)]
+            ),
+            (
+                "X(0)", 
+                [None]
+            ),
+        ],
+    )
 
-        circuit1 = Circuit.from_string("X(90),X(90),X(90)")
-        circuit2 = Circuit.from_string("X(90),Y(90),X(90)")
-        circuit3 = Circuit.from_string("X(90),X(-90),X(90)")
-        circuit4 = Circuit.from_string("X(90),X(90),Y(90)")
-        circuit5 = Circuit.from_string("X(30),X(90)")
-        circuit6 = Circuit.from_string("X(90)")
-        circuit7 = Circuit.from_string("X(0)")
+    def test_sum_of_gates(self, gate_string, final_circuit):
         
-        circuit1 = circuit1.optimizationXY()
-        circuit2 = circuit2.optimizationXY()
-        circuit3 = circuit3.optimizationXY()
-        circuit4 = circuit4.optimizationXY()
-        circuit5 = circuit5.optimizationXY()
-        circuit6 = circuit6.optimizationXY()
+        if gate_string == "X(0)":
+            with pytest.raises(UnboundLocalError):
+                circuit = Circuit.from_string(gate_string).optimizationXY()
+        else:
+            circuit = Circuit.from_string(gate_string).optimizationXY()
+            assert circuit.gates == final_circuit
 
-        with pytest.raises(UnboundLocalError):
-            circuit7 = circuit7.optimizationXY()
-
-        
-        assert circuit1.gates == [
-            Gate(axis = 'X', angle = 270)
-        ]
-        assert circuit2.gates == [
-            Gate(axis = 'X', angle = 90),
-            Gate(axis = 'Y', angle = 90),
-            Gate(axis = 'X', angle = 90)
-        ]
-        assert circuit3.gates == [
-            Gate(axis = 'X', angle = 90)
-        ]
-        assert circuit4.gates == [
-            Gate(axis = 'X', angle = 180),
-            Gate(axis = 'Y', angle = 90)
-        ]
-        assert circuit5.gates == [
-            Gate(axis = 'X', angle = 120)
-        ]
-        assert circuit6.gates == [
-            Gate(axis = 'X', angle = 90)
-        ]
-
-
-    def test_reflections_and_sum_of_gates(self):
-
-        circuit1 = Circuit.from_string("X(90),Y(180),X(90)")
-        circuit2 = Circuit.from_string("Y(90),X(180),Y(90)")
-        circuit3 = Circuit.from_string("Y(90),Y(90),X(180),Y(90),Y(90)")
-        circuit4 = Circuit.from_string("X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)")
-        circuit5 = Circuit.from_string("Y(90),X(180)")
-        circuit6 = Circuit.from_string("X(90),X(180)")
+    @pytest.mark.parametrize(
+        "gate_string, final_circuit",
+        [
+            (
+                "X(90),Y(180),X(90)", 
+                [Gate(axis = 'Y', angle = 180)]
+            ),
+            (
+                "Y(90),X(180),Y(90)", 
+                [Gate(axis = 'X', angle = 180)]
+            ),
+            (
+                "Y(90),Y(90),X(180),Y(90),Y(90)", 
+                [Gate(axis = 'X', angle = 180)]
+            ),
+            (
+                "X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)", 
+                [ Gate(axis = 'Y', angle = 20)]
+            ),
+            (
+                "Y(90),X(180)", 
+                [Gate(axis = 'Y', angle = 90), Gate(axis = 'X', angle = 180)]
+            ),
+            (
+                "X(90),X(180)", 
+                [Gate(axis = 'X', angle = 270)]
+            ),
+            (
+                "X(90),Y(90),X(90),Y(180),X(90),Y(90),X(90)", 
+                [Gate(axis = 'X', angle = 180)]
+            ),
+        ],
+    )
 
 
-        circuit1 = circuit1.optimizationXY()
-        circuit2 = circuit2.optimizationXY()
-        circuit3 = circuit3.optimizationXY()
-        circuit4 = circuit4.optimizationXY()
-        circuit5 = circuit5.optimizationXY()
-        circuit6 = circuit6.optimizationXY()
+    def test_reflections_and_sum_of_gates(self, gate_string, final_circuit):
 
-        assert circuit1.gates == [
-            Gate(axis = 'Y', angle = 180)
-        ]
-        assert circuit2.gates == [
-            Gate(axis = 'X', angle = 180)
-        ]
-        assert circuit3.gates == [
-            Gate(axis = 'X', angle = 180)
-        ]
-        assert circuit4.gates == [
-            Gate(axis = 'Y', angle = 20)
-        ]
-        assert circuit5.gates == [
-            Gate(axis = 'Y', angle = 90),
-            Gate(axis = 'X', angle = 180)
-        ]
-        assert circuit6.gates == [
-            Gate(axis = 'X', angle = 270)
-        ]
+        circuit = Circuit.from_string(gate_string).optimizationXY()
 
-        def test_swap_between_Y_and_Z(self):
+        assert circuit.gates == final_circuit
 
-            circuit1 = Circuit.from_string("Y(90)")
-            circuit2 = Circuit.from_string("X(90),Y(90)")
+    @pytest.mark.parametrize(
+        "gate_string, final_circuit",
+        [
+            (
+                "Y(90)", 
+                [Gate(axis = 'Z', angle = 90), Gate(axis = 'X', angle = 90), Gate(axis = 'Z', angle = -90)]
+            ),
+            (
+                "X(90),Y(90)", 
+                [Gate(axis = 'X', angle = 90), Gate(axis = 'Z', angle = 90), Gate(axis = 'X', angle = 90), Gate(axis = 'Z', angle = -90)]
+            ),
+        ],
+    )
+    def test_swap_between_Y_and_Z(self, gate_string, final_circuit):
 
-            circuit1 = circuit1.optimizationXZ()
-            circuit2 = circuit2.optimizationXZ()
+        circuit = Circuit.from_string(gate_string).optimizationXZ()
 
-            assert circuit.gates == [
-                Gate(axis = 'Z', angle = 90),
-                Gate(axis = 'X', angle = 90),
-                Gate(axis = 'Z', angle = -90)
-            ]
+        assert circuit.gates == final_circuit
 
-            assert circuit2.gates == [
-                Gate(axis = 'X', angle = 90),
-                Gate(axis = 'Z', angle = 90),
-                Gate(axis = 'X', angle = 90),
-                Gate(axis = 'Z', angle = -90)
-            ]
+    @pytest.mark.parametrize(
+        "gate_string, final_circuit",
+        [
+            (
+                "X(90),Y(180)", 
+                [Gate(axis = 'X', angle = 270), Gate(axis = 'Z', angle = 180)]
+            ),
+            (
+                "X(-180),Y(180)", 
+                [Gate(axis = 'Z', angle = 180)]
+            ),
+            (
+                "X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)", 
+                [Gate(axis = 'Z', angle = 90), Gate(axis = 'X', angle = 20), Gate(axis = 'Z', angle = -90)]
+            ),
+            (
+                "Y(90),Y(90),X(180),Y(90),Y(90)", 
+                [Gate(axis = 'X', angle = 180)]
+            ),
+        ],
+    )
+    def test_optimization_of_circuit_with_X_and_Z(self, gate_string, final_circuit):
 
-        def test_optimization_of_circuit_with_X_and_Z(self):
+        circuit = Circuit.from_string(gate_string).optimizationXZ()
 
-            circuit1 = Circuit.from_string("X(90),Y(180)")
-            circuit2 = Circuit.from_string("X(-180),Y(180)")
-            circuit3 = Circuit.from_string("X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)")
-            circuit4 = Circuit.from_string("Y(90),Y(90),X(180),Y(90),Y(90)")
-
-            circuit1 = circuit1.optimizationXZ()
-            circuit2 = circuit2.optimizationXZ()
-            circuit3 = circuit3.optimizationXZ()
-            circuit4 = circuit4.optimizationXZ()
-
-            assert circuit1.gates == [
-                Gate(axis = 'X', angle = 270),
-                Gate(axis = 'Z', angle = 180)
-            ]
-            assert circuit2.gates == [
-                Gate(axis = 'Z', angle = 180)
-            ]
-            assert circuit3.gates == [
-                Gate(axis = 'Z', angle = 90),
-                Gate(axis = 'X', angle = 20),
-                Gate(axis = 'Z', angle = -90)
-            ]
-            assert circuit4.gates == [
-                Gate(axis = 'X', angle = 180)
-            ]
-
-
+        assert circuit.gates == final_circuit
