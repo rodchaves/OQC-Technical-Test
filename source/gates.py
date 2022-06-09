@@ -21,7 +21,7 @@ class Gate:
     angle: int
 
     @classmethod
-    def from_string(cls, gate:str) -> Gate:
+    def from_string(cls, gate:str):
         """
         Construct the gate from a given string.
 
@@ -35,8 +35,8 @@ class Gate:
 
         """
         splitted_string = re.split("\(|\)", gate.strip())
-        axis = splitted_list[0]
-        angle = int(splitted_list[1])
+        axis = splitted_string[0]
+        angle = int(splitted_string[1])
 
         return cls(axis=axis,angle=angle)
     
