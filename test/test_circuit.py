@@ -145,3 +145,34 @@ class TestCircuit:
         circuit = Circuit.from_string(gate_string).optimizationXZ()
 
         assert circuit.gates == final_circuit
+
+    @pytest.mark.parametrize(
+        "gate_string, length, time",
+        [
+            (
+                "X(90),Y(180)", 
+                [1,1],
+                2
+            ),
+            (
+                "X(-180),Y(180)",
+                [1,2], 
+                1
+            ),
+            (
+                "X(90),Y(180),X(90),X(90),Y(180),X(90),Y(20)", 
+                [2,1],
+                5
+            ),
+            (
+                "Y(90),Y(90),X(180),Y(90),Y(90)", 
+                [3,3],
+                3
+            ),
+        ],
+    )
+    def test_optimization_of_circuit_with_X_and_Z(self, gate_string, length, time):
+
+        circuit = Circuit.from_string(gate_string)
+
+        assert circuit.hardware_running_time(lengthZ = length[0], lengthX = length[1]) == time
