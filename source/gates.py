@@ -40,7 +40,7 @@ class Gate:
 
         return cls(axis=axis, angle=angle)
 
-    def __add__(self, gate: Gate):
+    def __add__(self, gate):
         """
         Add the angle of two gates that have the same axis of rotation.
 
