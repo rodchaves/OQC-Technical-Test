@@ -31,11 +31,11 @@ class Circuit:
         Circuit: Circuit
 
         """
-        splited_gates = re.split(',', list_of_gates)
+        splitted_gates = re.split(',', list_of_gates)
 
         gates = []
 
-        from gates_string in splitted_gates:
+        for gates_string in splitted_gates:
             gates.append(Gate.from_string(gates_string))
 
         return Circuit(gates = gates)
