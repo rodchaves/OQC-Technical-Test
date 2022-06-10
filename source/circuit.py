@@ -58,12 +58,43 @@ class Circuit:
 
         Returns
         -------
-        None
+        circuit: Circuit
         
         """
         temporary_gate = self.gates[reflection_position]
         self.gates[reflection_position] = self.gates[reflection_position-1].reflect()
         self.gates[reflection_position-1] = temporary_gate
+
+        return self
+
+    def _perform_reflection(self):
+        """
+        Private method to perform a reflection using '_send_reflection_to_left' and return a bool
+        if the reflection was perfomed.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        -------
+        performed_reflection: bool
+        
+        """
+        if len(self.gates) < 3:
+            return False
+
+        performed_reflection, i = False, 1
+
+        while i < len(self.gates):
+            if self.gates[i-1].axis != self.gates[i].axis and self.gates[i].angle%360 == 180:
+                self = self._send_reflection_to_left(i)
+                performed_reflection = True
+            i += 1
+
+        return performed_reflection
+
+
 
     def optimizationXY(self):
         """
