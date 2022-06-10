@@ -130,7 +130,7 @@ class Circuit:
         removed_identity, i = False, 0
         
         while i < len(self.gates):
-            if self.gates[i].angle == 0:
+            if self.gates[i].angle%360 == 0:
                 self.gates.pop(i)
                 i -= 1
                 removed_identity = True
