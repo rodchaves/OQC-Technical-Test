@@ -45,7 +45,6 @@ class TestCircuit:
             ),
         ],
     )
-
     def test_sum_of_gates(self, gate_string, final_circuit):
         
         if gate_string == "X(0)":
@@ -90,10 +89,12 @@ class TestCircuit:
                 "X(90),Y(90),X(90),X(90),X(90),Y(180),X(90)", 
                 [Gate(axis = 'X', angle = 90), Gate(axis = 'Y', angle = 270), Gate(axis = 'X', angle = 180)]
             ),
+            (
+                "X(90),X(90),X(90),Y(90),X(120),X(120),X(120),Y(90),X(90),X(90),X(90)", 
+                [Gate(axis="Y", angle=180)]
+            )
         ],
     )
-
-
     def test_reflections_and_sum_of_gates(self, gate_string, final_circuit):
 
         circuit = Circuit.from_string(gate_string).optimizationXY()
