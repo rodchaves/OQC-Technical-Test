@@ -137,6 +137,32 @@ class Circuit:
             i += 1
         
         return removed_identity
+    
+    def _perform_sum(self):
+        """
+        Private method to sum to gates with the same axis of orientation and return a bool saying
+        if perfomed a summation or not.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        -------
+        summed: bool
+        
+        """
+        summed, i = False, 1
+
+        while i < len(self.gates):
+            if self.gates[i].axis == self.gates[i-1].axis:
+                self = self._sum_to_previous(i)
+                i -= 1
+                summed = True
+            i += 1
+        
+        return summed
+
 
 
 
