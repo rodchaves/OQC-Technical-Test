@@ -236,7 +236,6 @@ class Circuit:
         self = self._swap_Y_for_Z()
         
         while performed_changes:
-            print(self.gates)
             performed_changes = (
                 self._perform_sum() 
                 or self._perform_reflection()
@@ -286,7 +285,7 @@ class Circuit:
         Returns
         -------
         circuit_string: str
-        
+
         """
         circuit_string = ''
 
