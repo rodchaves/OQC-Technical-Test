@@ -106,12 +106,37 @@ class Circuit:
         Returns
         -------
         circuit: Circuit
-        
+
         """
         self.gates[sum_position-1] = self.gates[sum_position] + self.gates[sum_position - 1]
         self.gates.pop(sum_position)
 
         return self
+
+    def _remove_identity(self):
+        """
+        Private method to remove identity elements in the circuit when the angle of rotation is 
+        equal to 0 or 360.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        -------
+        removed_identity: bool
+        
+        """
+        removed_identity, i = False, 1
+        
+        while i < len(self.gates):
+            if self.gates[i].angle%360 == 0:
+                self.gates.pop(i)
+                i -= 1
+                removed_identity = True
+            i += 1
+        
+        return removed_identity
 
 
 
