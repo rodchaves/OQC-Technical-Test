@@ -274,3 +274,26 @@ class Circuit:
                 time_taken += lengthX
 
         return time_taken
+
+    def __str__(self):
+        """
+        Method to output the correct value string format when describing the circuit.
+
+        Parameters
+        ----------
+        self: Circuit
+
+        Returns
+        -------
+        circuit_string: str
+        
+        """
+        circuit_string = ''
+
+        for gate in self.gates:
+            circuit_string += str(gate) + ','
+        
+        if len(circuit_string) > 1:
+            return circuit_string[:-1]
+
+        return circuit_string
