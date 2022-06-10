@@ -127,15 +127,15 @@ class Circuit:
         removed_identity: bool
         
         """
-        removed_identity, i = False, 1
+        removed_identity, i = False, 0
         
         while i < len(self.gates):
-            if self.gates[i].angle%360 == 0:
+            if self.gates[i].angle == 0:
                 self.gates.pop(i)
                 i -= 1
                 removed_identity = True
             i += 1
-        
+
         return removed_identity
     
     def _perform_sum(self):
@@ -160,12 +160,8 @@ class Circuit:
                 i -= 1
                 summed = True
             i += 1
-        
+    
         return summed
-
-
-
-
 
     def optimizationXY(self):
         """
@@ -187,9 +183,9 @@ class Circuit:
         while performed_changes:
             
             performed_changes = (
-                self._perform_sum or
-                self._perform_reflection or
-                self._remove_identity
+                self._perform_sum()
+                or self._perform_reflection()
+                or self._remove_identity()
             )
         
         return self
@@ -208,7 +204,7 @@ class Circuit:
         circuit: Circuit
 
         """
-        
+
         list_of_gates = self.gates
         final_circuit = []
 
@@ -240,11 +236,11 @@ class Circuit:
         self = self._swap_Y_for_Z()
         
         while performed_changes:
-
+            print(self.gates)
             performed_changes = (
-                self._perform_sum or
-                self._perform_reflection or
-                self._remove_identity
+                self._perform_sum() 
+                or self._perform_reflection()
+                or self._remove_identity()
             )
 
         return self
@@ -276,5 +272,5 @@ class Circuit:
                 time_taken += lengthZ
             else:
                 time_taken += lengthX
-        
+
         return time_taken

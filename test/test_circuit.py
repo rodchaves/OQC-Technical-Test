@@ -42,18 +42,14 @@ class TestCircuit:
             ),
             (
                 "X(0)", 
-                [None]
+                []
             ),
         ],
     )
     def test_sum_of_gates(self, gate_string, final_circuit):
         
-        if gate_string == "X(0)":
-            with pytest.raises(UnboundLocalError):
-                circuit = Circuit.from_string(gate_string).optimizationXY()
-        else:
-            circuit = Circuit.from_string(gate_string).optimizationXY()
-            assert circuit.gates == final_circuit
+        circuit = Circuit.from_string(gate_string).optimizationXY()
+        assert circuit.gates == final_circuit
 
 
     @pytest.mark.parametrize(
@@ -89,7 +85,7 @@ class TestCircuit:
             ),
             (
                 "X(90),Y(90),X(90),X(90),X(90),Y(180),X(90)", 
-                [Gate(axis = 'X', angle = 90), Gate(axis = 'Y', angle = 270), Gate(axis = 'X', angle = 180)]
+                [Gate(axis = 'X', angle = 270), Gate(axis = 'Y', angle = -270)]
             ),
             (
                 "X(90),X(90),X(90),Y(90),X(120),X(120),X(120),Y(90),X(90),X(90),X(90)", 
@@ -177,7 +173,7 @@ class TestCircuit:
             ),
         ],
     )
-    def test_optimization_of_circuit_with_X_and_Z(self, gate_string, length, time):
+    def test_hardware_running_time(self, gate_string, length, time):
 
         circuit = Circuit.from_string(gate_string)
 
