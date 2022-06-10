@@ -150,7 +150,7 @@ class Circuit:
         Returns
         -------
         summed: bool
-        
+
         """
         summed, i = False, 1
 
@@ -182,8 +182,15 @@ class Circuit:
         circuit: Circuit
 
         """
-        self = self._check_reflections()
-        self = self._sum_rotations_same_axis()
+        performed_changes = True
+
+        while performed_changes:
+            
+            performed_changes = (
+                self._perform_sum or
+                self._perform_reflection or
+                self._remove_identity
+            )
         
         return self
 
@@ -201,7 +208,7 @@ class Circuit:
         circuit: Circuit
 
         """
-        self = self._sum_rotations_same_axis()
+        
         list_of_gates = self.gates
         final_circuit = []
 
@@ -213,7 +220,7 @@ class Circuit:
             else:
                 final_circuit.append(gate)
         
-        return Circuit(gates = final_circuit)._sum_rotations_same_axis()
+        return Circuit(gates = final_circuit)
 
     def optimizationXZ(self):
         """
@@ -229,10 +236,16 @@ class Circuit:
         circuit: Circuit
 
         """
-
+        performed_changes = True
         self = self._swap_Y_for_Z()
-        self = self._check_reflections()
-        self = self._sum_rotations_same_axis()
+        
+        while performed_changes:
+
+            performed_changes = (
+                self._perform_sum or
+                self._perform_reflection or
+                self._remove_identity
+            )
 
         return self
 

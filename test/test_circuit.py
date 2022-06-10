@@ -11,6 +11,7 @@ class TestCircuit:
             Gate(axis = 'X', angle = 90),
             Gate(axis = 'Y', angle = 180)
         ]
+
     
     @pytest.mark.parametrize(
         "gate_string, final_circuit",
@@ -53,6 +54,7 @@ class TestCircuit:
         else:
             circuit = Circuit.from_string(gate_string).optimizationXY()
             assert circuit.gates == final_circuit
+
 
     @pytest.mark.parametrize(
         "gate_string, final_circuit",
@@ -101,6 +103,7 @@ class TestCircuit:
 
         assert circuit.gates == final_circuit
 
+
     @pytest.mark.parametrize(
         "gate_string, final_circuit",
         [
@@ -119,6 +122,7 @@ class TestCircuit:
         circuit = Circuit.from_string(gate_string).optimizationXZ()
 
         assert circuit.gates == final_circuit
+
 
     @pytest.mark.parametrize(
         "gate_string, final_circuit",
@@ -146,6 +150,7 @@ class TestCircuit:
         circuit = Circuit.from_string(gate_string).optimizationXZ()
 
         assert circuit.gates == final_circuit
+
 
     @pytest.mark.parametrize(
         "gate_string, length, time",
