@@ -46,7 +46,24 @@ class Circuit:
 
         return cls(gates = gates)
     
-    
+    def _send_reflection_to_left(self, reflection_position):
+        """
+        Private method to exchange position of a gate with the reflection gate and
+        set the angle of the gate to minus its angle.
+
+        Parameters
+        ----------
+        self: Circuit
+        reflection_position: int
+
+        Returns
+        -------
+        None
+        
+        """
+        temporary_gate = self.gates[reflection_position]
+        self.gates[reflection_position] = self.gates[reflection_position-1].reflect()
+        self.gates[reflection_position-1] = temporary_gate
 
     def optimizationXY(self):
         """
