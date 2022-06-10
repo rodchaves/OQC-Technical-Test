@@ -94,6 +94,26 @@ class Circuit:
 
         return performed_reflection
 
+    def _sum_to_previous(self, sum_position):
+        """
+        Private method to add to gates and remove one of them from the circuit.
+
+        Parameters
+        ----------
+        self: Circuit
+        sum_position: int
+
+        Returns
+        -------
+        circuit: Circuit
+        
+        """
+        self.gates[sum_position-1] = self.gates[sum_position] + self.gates[sum_position - 1]
+        self.gates.pop(sum_position)
+
+        return self
+
+
 
 
     def optimizationXY(self):
