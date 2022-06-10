@@ -49,7 +49,7 @@ class Gate:
 
         Parameters
         ----------
-        gate: Gate
+        self: Gate
         
         Returns
         -------
@@ -61,5 +61,20 @@ class Gate:
             return Gate(axis = self.axis, angle = new_angle)
         raise ValueError
     
+    def reflect(self):
+        """
+        Reflect the angle of the gate from theta to -theta
+
+        Parameters
+        ----------
+        self: Gate
+
+        Returns
+        -------
+        gate: Gate
+        """
+        self.angle = -self.angle
+
+        return self
 
 
