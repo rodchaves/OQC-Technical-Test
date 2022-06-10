@@ -63,7 +63,7 @@ class Gate:
     
     def reflect(self):
         """
-        Reflect the angle of the gate from theta to -theta
+        Reflect the angle of the gate from theta to -theta.
 
         Parameters
         ----------
@@ -76,5 +76,22 @@ class Gate:
         self.angle = -self.angle
 
         return self
+
+    def __str__(self):
+        """
+        Method to return the rotation axis and angle in the correct format.
+
+        Parameters
+        ----------
+        self: Gate
+
+        Returns
+        -------
+        gate_string: str
+        
+        """
+        gate_string = f'{self.axis}({self.angle})'
+
+        return gate_string
 
 
